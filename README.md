@@ -6,6 +6,19 @@
 
 > 声明：本脚本由 AI 生成。词典与匹配规则仍在持续完善，遇到漏翻欢迎提 Issue 反馈。
 
+## 许可
+
+**CC BY-NC-SA 4.0**（署名 - 非商业性使用 - 相同方式共享）— [完整文本](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+| | 说明 |
+| --- | --- |
+| ✅ 可以 | 个人使用、安装、修改；非商业前提下复制、分发、再发布 |
+| 🚫 不可以 | 出售本脚本或其衍生版本；打包进收费产品 / 付费插件合集 / 付费教程素材；任何以营利为目的的使用 |
+| 📌 必须 | 保留原作者署名与许可声明 |
+| 🔗 衍生 | 二次开发版本须同样采用 CC BY-NC-SA 4.0 |
+
+一句话：**免费给个人用，不允许拿去赚钱。**
+
 ## 安装
 
 1. 安装 [Tampermonkey](https://www.tampermonkey.net/)（或 Violentmonkey / Greasemonkey）。
@@ -41,7 +54,7 @@
 | `@supportURL` | Issues 地址，路径保持首字母大写 |
 | `@version` | 每次发布递增，Greasyfork 靠它检测更新 |
 
-仓库名建议直接用 `GitHub-zh-CN`，与脚本文件名保持一致。另外仓库根目录补一个 `LICENSE`（脚本声明为 MIT）。
+仓库名建议直接用 `GitHub-zh-CN`，与脚本文件名保持一致。另外仓库根目录需要一个 `LICENSE`（本项目采用 CC BY-NC-SA 4.0，已随仓库提供）。
 
 > 安全提醒：脚本里不要写任何令牌 / 密钥。若要本地调试，请用环境变量或 `.gitignore` 掉的配置文件，切勿把 `ghp_` 开头的 Personal Access Token 提交进仓库或贴到对话里。
 
@@ -93,4 +106,4 @@ const DICT_REPO = {
 
 ## License
 
-MIT
+CC BY-NC-SA 4.0 — 非商业性使用，禁止用于营利。详见 [LICENSE](./LICENSE)。
