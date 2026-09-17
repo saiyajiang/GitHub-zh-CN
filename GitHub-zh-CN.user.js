@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.0.0
+// @version      1.1.0
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched).
@@ -166,7 +166,55 @@
     'Archive': '归档',
     'Unarchive': '取消归档',
     'Transfer': '转移',
-    'Visibility': '可见性'
+    'Visibility': '可见性',
+    'Details': '详情',
+    'Summary': '摘要',
+    'Permissions': '权限',
+    'Done': '完成',
+    'Send': '发送',
+    'Yes': '是',
+    'No': '否',
+    'Never': '从不',
+    'Always': '总是',
+    'Select': '选择',
+    'Selected': '已选择',
+    'Choose': '选择',
+    'Browse': '浏览',
+    'Import': '导入',
+    'Export': '导出',
+    'Sync': '同步',
+    'Connect': '连接',
+    'Disconnect': '断开连接',
+    'Install': '安装',
+    'Uninstall': '卸载',
+    'Configure': '配置',
+    'Manage': '管理',
+    'View': '查看',
+    'Read': '已读',
+    'Muted': '已静音',
+    'Copy link': '复制链接',
+    'Copy URL': '复制网址',
+    'Copy to clipboard': '复制到剪贴板',
+    'Full screen': '全屏',
+    'Exit full screen': '退出全屏',
+    'Zen mode': '专注模式',
+    'Theme': '主题',
+    'Light': '浅色',
+    'Dark': '深色',
+    'System': '跟随系统',
+    'Toggle theme': '切换主题',
+    'Add reaction': '添加表情回应',
+    'Join the conversation': '参与讨论',
+    'Sign up for free': '免费注册',
+    'Submit issue': '提交议题',
+    'Compare & pull request': '对比并创建拉取请求',
+    'View profile': '查看个人主页',
+    'Go to top': '回到顶部',
+    'Jump to bottom': '跳到底部',
+    'Unsubscribe from all notifications': '取消订阅全部通知',
+    'Report abuse': '举报滥用',
+    'Learn about': '了解',
+    'Get help': '获取帮助'
   };
 
   // 1.2 顶部导航与全局菜单
@@ -209,7 +257,30 @@
     'Enterprises': '企业',
     'Try the new experience': '体验新版界面',
     'Switch to the old experience': '切回旧版界面',
-    'Keyboard shortcuts': '键盘快捷键'
+    'Keyboard shortcuts': '键盘快捷键',
+    'Skip to content': '跳到主要内容',
+    'Skip to main content': '跳到主要内容',
+    'Copilot': 'Copilot',
+    'Sponsors': '赞助',
+    'Customers': '客户',
+    'Pricing': '定价',
+    'Team': '团队',
+    'Log in': '登录',
+    'Log out': '退出登录',
+    'Create new…': '新建…',
+    'New discussion': '新建讨论',
+    'New label': '新建标签',
+    'New milestone': '新建里程碑',
+    'New secret': '新建密钥',
+    'New variable': '新建变量',
+    'New environment': '新建环境',
+    'New workflow': '新建工作流',
+    'New issue type': '新建议题类型',
+    'New deployment': '新建部署',
+    'Manage cookies': '管理 Cookie',
+    'Toggle navigation': '切换导航',
+    'Open menu': '打开菜单',
+    'Close menu': '关闭菜单'
   };
 
   // 1.3 个人主页 / 组织页
@@ -296,7 +367,35 @@
     'This repository': '此仓库',
     'No releases published': '尚未发布任何版本',
     'No packages published': '尚未发布任何软件包',
-    'Releases and tags': '发布与标签'
+    'Releases and tags': '发布与标签',
+    'Languages': '语言',
+    'Custom properties': '自定义属性',
+    'Add custom properties': '添加自定义属性',
+    'Latest commit': '最新提交',
+    'Repository name': '仓库名称',
+    'Public repository': '公开仓库',
+    'Private repository': '私有仓库',
+    'Template repository': '模板仓库',
+    'Use this template': '使用此模板',
+    'Add a README file': '添加自述文件',
+    'Add .gitignore': '添加 .gitignore',
+    'Choose a license': '选择许可证',
+    'Initialize this repository with': '使用以下项目初始化此仓库',
+    'Create repository': '创建仓库',
+    'Owner': '所有者',
+    'Include all branches': '包含所有分支',
+    'Include tags': '包含标签',
+    'Code owner': '代码所有者',
+    'Code owners': '代码所有者',
+    'Watchers': '关注者',
+    'Views': '访问量',
+    'Deployments': '部署',
+    'Packages': '软件包',
+    'Discussions': '讨论',
+    'New discussion': '新建讨论',
+    'Generating summary': '正在生成摘要',
+    'Security policy': '安全策略',
+    'Repository details': '仓库详情'
   };
 
   // 1.5 代码浏览
@@ -443,11 +542,53 @@
     'Jump to bottom': '跳到底部',
     'Bottom': '底部',
     'Top': '顶部',
-    'Now': '现在'
+    'Now': '现在',
+    'Merged': '已合并',
+    'Changes requested': '请求修改',
+    'Review required': '需要审阅',
+    'Start a review': '开始审阅',
+    'Finish your review': '完成你的审阅',
+    'Add a review comment': '添加审阅评论',
+    'Suggested change': '建议的更改',
+    'Commit suggestion': '提交建议',
+    'Add suggestion to batch': '将建议加入批处理',
+    'Outdated': '已过时',
+    'Files': '文件',
+    'Lines': '行',
+    'Additions': '新增',
+    'Deletions': '删除',
+    'No changes': '无更改',
+    'View diff': '查看差异',
+    'Expand all': '全部展开',
+    'Collapse all': '全部折叠',
+    'Load diff': '加载差异',
+    'Diff too large': '差异过大',
+    'Binary file': '二进制文件',
+    'Renamed': '已重命名',
+    'New file': '新文件',
+    'Deleted file': '已删除的文件',
+    'Filter by label': '按标签筛选',
+    'No one assigned': '未指派任何人',
+    'Clear current search query': '清空当前搜索条件',
+    'Sort by newest': '按最新排序',
+    'Sort by oldest': '按最早排序',
+    'Most commented': '评论最多',
+    'Recently updated': '最近更新',
+    'Best match': '最佳匹配',
+    'Linked pull requests': '关联拉取请求',
+    'Development': '开发',
+    'Linked branches': '关联分支',
+    'Timeline': '时间线',
+    'Transfer issue': '转移议题',
+    'Lock conversation': '锁定讨论',
+    'Unlock conversation': '解锁讨论',
+    'Pinned issue': '置顶议题',
+    'Duplicate': '重复'
   };
 
   // 1.7 Actions / 工作流
   const DICT_ACTIONS = {
+    'Actions': '操作',
     'All workflows': '全部工作流',
     'Workflows': '工作流',
     'Workflow': '工作流',
@@ -569,6 +710,209 @@
     'Add file to gist': '向代码片段添加文件'
   };
 
+  // 1.11 Security / 安全
+  const DICT_SECURITY = {
+    'Security and quality': '安全与质量',
+    'Code security': '代码安全',
+    'Security overview': '安全概览',
+    'Alerts': '警报',
+    'Alert': '警报',
+    'Open alerts': '待处理警报',
+    'Closed alerts': '已关闭警报',
+    'Dependabot alerts': 'Dependabot 警报',
+    'Dependabot security updates': 'Dependabot 安全更新',
+    'Code scanning': '代码扫描',
+    'Code scanning alerts': '代码扫描警报',
+    'Secret scanning': '密钥扫描',
+    'Push protection': '推送保护',
+    'Security advisories': '安全公告',
+    'Advisories': '公告',
+    'Advisory': '公告',
+    'Draft security advisory': '起草安全公告',
+    'Private vulnerability reporting': '私密漏洞报告',
+    'Report a vulnerability': '报告漏洞',
+    'Security policy': '安全策略',
+    'Vulnerability': '漏洞',
+    'Vulnerabilities': '漏洞',
+    'Severity': '严重程度',
+    'Critical': '严重',
+    'High': '高',
+    'Moderate': '中等',
+    'Medium': '中',
+    'Low': '低',
+    'Dismissed': '已忽略',
+    'Fixed': '已修复',
+    'Patched': '已修补',
+    'Affected versions': '受影响版本',
+    'Patched versions': '已修补版本',
+    'Enable Dependabot alerts': '启用 Dependabot 警报',
+    'No security advisories': '暂无安全公告'
+  };
+
+  // 1.12 Insights / 洞察
+  const DICT_INSIGHTS = {
+    'Traffic': '流量',
+    'Dependency graph': '依赖关系图',
+    'Dependencies': '依赖项',
+    'Dependents': '依赖方',
+    'Network': '网络图',
+    'Code frequency': '代码频率',
+    'Commit activity': '提交活动',
+    'Community standards': '社区规范',
+    'Community profile': '社区档案',
+    'Views': '访问量',
+    'Total views': '总访问量',
+    'Unique visitors': '独立访客',
+    'Clones': '克隆数',
+    'Unique clones': '独立克隆数',
+    'Referring sites': '引荐站点',
+    'Popular content': '热门内容',
+    'Excluding bots': '不含机器人',
+    'Contributors over time': '贡献者随时间变化',
+    'Additions and deletions': '新增与删除'
+  };
+
+  // 1.13 Notifications / 通知
+  const DICT_NOTIFICATIONS = {
+    'Inbox': '收件箱',
+    'Archive': '归档',
+    'Mark as done': '标记为完成',
+    'Mark as unread': '标记为未读',
+    'Archive all': '全部归档',
+    'All unread': '全部未读',
+    'Notification settings': '通知设置',
+    'Email notifications': '邮件通知',
+    'Web notifications': '网页通知',
+    'Custom routing': '自定义路由',
+    'Group similar notifications': '合并相似通知',
+    'Do not send': '不发送',
+    'Participating and mentions': '参与与提及',
+    'You are receiving this because': '你收到此通知是因为',
+    'No new notifications': '暂无新通知'
+  };
+
+  // 1.14 搜索
+  const DICT_SEARCH = {
+    'Users': '用户',
+    'Search results': '搜索结果',
+    'No results matched your search': '没有匹配你搜索的结果',
+    'No results found': '未找到结果',
+    'Try a different search term': '试试其他搜索词',
+    'Qualifiers': '限定符',
+    'Match': '匹配',
+    'In this repository': '在本仓库内',
+    'All of GitHub': '整个 GitHub',
+    'Use advanced search': '使用高级搜索',
+    'Clear search': '清除搜索',
+    'Search issues': '搜索议题',
+    'Search discussions': '搜索讨论',
+    'Search users': '搜索用户',
+    'Search topics': '搜索话题'
+  };
+
+  // 1.15 Agents / Copilot
+  const DICT_AGENTS = {
+    'Agents': '代理',
+    'Agent': '代理',
+    'New agent session': '新建代理会话',
+    'Agent sessions': '代理会话',
+    'Sessions': '会话',
+    'New session': '新建会话',
+    'Coding agent': '编码代理',
+    'Assign to Copilot': '指派给 Copilot',
+    'Copilot Chat': 'Copilot 对话',
+    'Ask Copilot': '询问 Copilot',
+    'Chat': '对话',
+    'Model': '模型',
+    'Choose model': '选择模型',
+    'Send message': '发送消息',
+    'Thinking': '思考中',
+    'Generating': '生成中',
+    'Regenerate': '重新生成',
+    'Suggestions': '建议',
+    'Work items': '工作项',
+    'Tasks': '任务',
+    'Stop': '停止'
+  };
+
+  // 1.16 编辑器 / 表单
+  const DICT_EDITOR = {
+    'Bold': '加粗',
+    'Italic': '斜体',
+    'Heading': '标题',
+    'Strikethrough': '删除线',
+    'Insert link': '插入链接',
+    'Insert code': '插入代码',
+    'Insert table': '插入表格',
+    'Bulleted list': '无序列表',
+    'Numbered list': '有序列表',
+    'Quote': '引用',
+    'Attach files': '附加文件',
+    'Add a file': '添加文件',
+    'Body': '正文',
+    'Subject': '主题',
+    'Message': '消息',
+    'Reason': '原因',
+    'Reason for flagging': '举报原因',
+    'Submit report': '提交举报',
+    'Clipboard': '剪贴板',
+    'Remove formatting': '清除格式'
+  };
+
+  // 1.17 分支 / 提交
+  const DICT_BRANCH = {
+    'Switch branches/tags': '切换分支/标签',
+    'View all branches': '查看所有分支',
+    'View all tags': '查看所有标签',
+    'Find or create a branch': '查找或创建分支',
+    'New branch': '新建分支',
+    'Create branch': '创建分支',
+    'Switch to': '切换到',
+    'Latest commit': '最新提交',
+    'Verified': '已验证',
+    'Unverified': '未验证',
+    'Signed': '已签名',
+    'Unsigned': '未签名',
+    'Authored': '编写',
+    'Parent': '父提交',
+    'Merge': '合并',
+    'Clone URLs': '克隆地址',
+    'Use HTTPS': '使用 HTTPS',
+    'Use SSH': '使用 SSH',
+    'Open in terminal': '在终端中打开',
+    'Up to date': '已是最新',
+    'Ahead': '领先',
+    'Behind': '落后',
+    'Delete branch': '删除分支',
+    'Restore branch': '恢复分支',
+    'This branch is': '此分支',
+    'This branch': '此分支',
+    'Contribute to this branch': '向此分支贡献'
+  };
+
+  // 1.18 页脚 / 站点信息
+  const DICT_FOOTER = {
+    'Terms': '条款',
+    'Privacy': '隐私',
+    'Docs': '文档',
+    'Blog': '博客',
+    'Support': '支持',
+    'Sitemap': '站点地图',
+    'Manage cookies': '管理 Cookie',
+    'Do not share my personal information': '不要分享我的个人信息',
+    'What is Git?': '什么是 Git？',
+    'Follow us on': '关注我们',
+    'All rights reserved': '保留所有权利'
+  };
+
+  // 1.19 连接词（放最后一层，仅在短语替换阶段兜底，精确词条优先）
+  const DICT_CONNECTORS = {
+    'and': '和',
+    'or': '或',
+    'with': '含',
+    'from': '来自'
+  };
+
   const DICT = Object.assign(
     {},
     DICT_COMMON,
@@ -580,7 +924,16 @@
     DICT_ACTIONS,
     DICT_SETTINGS,
     DICT_EXPLORE,
-    DICT_GIST
+    DICT_GIST,
+    DICT_SECURITY,
+    DICT_INSIGHTS,
+    DICT_NOTIFICATIONS,
+    DICT_SEARCH,
+    DICT_AGENTS,
+    DICT_EDITOR,
+    DICT_BRANCH,
+    DICT_FOOTER,
+    DICT_CONNECTORS
   );
 
   /* =========================================================================
@@ -598,6 +951,20 @@
   };
 
   const PATTERNS = [
+    /* —— 组合优先规则：必须排在通用计数规则之前，否则会被 "N commits" 抢先命中 —— */
+    // PR 合并说明：wants to merge 3 commits into main from feature
+    [/\bwants to merge (\d[\d,]*)\s+commits?\s+into\s+(\S+)\s+from\s+(\S+)/gi,
+      (m, n, base, head) => `希望将 ${n} 次提交从 ${head} 合并到 ${base}`],
+    // 分支领先 / 落后
+    [/\b(\d[\d,]*)\s+commits?\s+ahead\s+of\b/gi, '领先 $1 次提交于'],
+    [/\b(\d[\d,]*)\s+commits?\s+behind\b/gi, '落后 $1 次提交'],
+    // 提交列表：3 commits on main
+    [/\b(\d[\d,]*)\s+commits?\s+on\b/gi, '$1 次提交于'],
+    // diff 统计：5 additions and 3 deletions
+    [/\b(\d[\d,]*)\s+additions?\s+and\s+(\d[\d,]*)\s+deletions?/gi, '新增 $1 处、删除 $2 处'],
+    [/\bThis branch is up to date\b/gi, '此分支已是最新'],
+    [/\bup to date\b/gi, '已是最新'],
+
     // 计数 + 名词（含单复数）
     [/\b(\d[\d,]*)\s+commits?\b/gi, '$1 次提交'],
     [/\b(\d[\d,]*)\s+branches?\b/gi, '$1 个分支'],
@@ -619,6 +986,22 @@
     [/\b(\d[\d,]*)\s+Closed\b/g, '$1 个已关闭'],
     [/\b(\d[\d,]*)\s+deployments?\b/gi, '$1 次部署'],
     [/\b(\d[\d,]*)\s+environments?\b/gi, '$1 个环境'],
+    [/\b(\d[\d,]*)\s+additions?\b/gi, '$1 处新增'],
+    [/\b(\d[\d,]*)\s+deletions?\b/gi, '$1 处删除'],
+    [/\b(\d[\d,]*)\s+views?\b/gi, '$1 次访问'],
+    [/\b(\d[\d,]*)\s+visitors?\b/gi, '$1 位访客'],
+    [/\b(\d[\d,]*)\s+downloads?\b/gi, '$1 次下载'],
+    [/\b(\d[\d,]*)\s+discussions?\b/gi, '$1 个讨论'],
+    [/\b(\d[\d,]*)\s+projects?\b/gi, '$1 个项目'],
+    [/\b(\d[\d,]*)\s+packages?\b/gi, '$1 个软件包'],
+    [/\b(\d[\d,]*)\s+members?\b/gi, '$1 位成员'],
+    [/\b(\d[\d,]*)\s+teams?\b/gi, '$1 个团队'],
+    [/\b(\d[\d,]*)\s+labels?\b/gi, '$1 个标签'],
+    [/\b(\d[\d,]*)\s+reactions?\b/gi, '$1 个表情回应'],
+    [/\b(\d[\d,]*)\s+references?\b/gi, '$1 处引用'],
+
+    // PR 差异统计：+12 −3
+    [/\+(\d[\d,]*)\s*−\s*(\d[\d,]*)/g, '新增 $1 删除 $2'],
 
     // 相对时间
     [/\b(\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago\b/gi,
@@ -701,6 +1084,10 @@
     'g'
   );
 
+  // aria-label / title 等属性里的短语常是全小写（如 "Notifications and alerts"），
+  // 属性场景额外用一份大小写不敏感的版本兜底；文本节点仍保持敏感以防误伤用户内容。
+  const PHRASE_RE_I = new RegExp(PHRASE_RE.source, 'gi');
+
   function applyPatterns(text) {
     let out = text;
     for (let i = 0; i < PATTERNS.length; i++) {
@@ -715,7 +1102,18 @@
     return out;
   }
 
-  function translateString(text) {
+  function phraseReplace(text, ignoreCase) {
+    if (text.length > 400) return text;
+    const re = ignoreCase ? PHRASE_RE_I : PHRASE_RE;
+    re.lastIndex = 0;
+    return text.replace(re, (m) => {
+      let v = DICT[m];
+      if (v == null && ignoreCase) v = EXACT_LOWER.get(m.toLowerCase());
+      return v == null ? m : v;
+    });
+  }
+
+  function translateString(text, ignoreCase) {
     if (!text || !text.trim()) return text;
 
     const trimmed = text.trim();
@@ -732,14 +1130,8 @@
     // 2) 正则规则（数字、日期等）先跑，避免 "12 Open" 被短语替换抢先成 "12 待处理"
     let out = applyPatterns(text);
 
-    // 3) 长句内的短语替换（大小写敏感，避免误伤用户内容）
-    if (out.length <= 400) {
-      PHRASE_RE.lastIndex = 0;
-      out = out.replace(PHRASE_RE, (m) => {
-        const v = DICT[m];
-        return v == null ? m : v;
-      });
-    }
+    // 3) 长句内的短语替换
+    out = phraseReplace(out, !!ignoreCase);
 
     return out;
   }
@@ -831,7 +1223,7 @@
         if (!el.hasAttribute(name)) continue;
         const old = el.getAttribute(name);
         if (!old || !old.trim()) continue;
-        const now = translateString(old);
+        const now = translateString(old, true);
         if (now !== old) {
           recordAttr(el, name, old);
           el.setAttribute(name, now);
@@ -843,7 +1235,7 @@
         if (type === 'submit' || type === 'button' || type === 'reset') {
           const old = el.getAttribute('value');
           if (old && old.trim()) {
-            const now = translateString(old);
+            const now = translateString(old, true);
             if (now !== old) {
               recordAttr(el, 'value', old);
               el.setAttribute('value', now);
@@ -958,7 +1350,50 @@
   }
 
   /* =========================================================================
-   * 6. 入口与菜单
+   * 6. 未翻译文案检测（维护用）
+   * ========================================================================= */
+
+  function collectUntranslated() {
+    const list = [];
+    const seen = new Set();
+
+    const push = (text, el) => {
+      const t = (text || '').trim();
+      if (!t || t.length > 120 || seen.has(t)) return;
+      seen.add(t);
+      if (!/[A-Za-z]/.test(t)) return;
+      // 中文已占主导（说明基本翻过了）就跳过
+      const cn = (t.match(/[\u4e00-\u9fa5]/g) || []).length;
+      if (cn > 0 && cn * 2 >= t.length) return;
+      list.push({
+        text: t,
+        tag: el.tagName ? el.tagName.toLowerCase() : '',
+        cls: (el.className || '').toString().slice(0, 40)
+      });
+    };
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+    let n;
+    while ((n = walker.nextNode())) {
+      const parent = n.parentElement;
+      if (!parent || shouldSkip(parent)) continue;
+      push(n.nodeValue, parent);
+    }
+
+    const els = document.body.querySelectorAll('*');
+    for (let i = 0; i < els.length; i++) {
+      const el = els[i];
+      if (shouldSkip(el, true)) continue;
+      for (let k = 0; k < TRANSLATE_ATTRS.length; k++) {
+        const name = TRANSLATE_ATTRS[k];
+        if (el.hasAttribute(name)) push(el.getAttribute(name), el);
+      }
+    }
+    return list;
+  }
+
+  /* =========================================================================
+   * 7. 入口与菜单
    * ========================================================================= */
 
   const STORE_KEY = 'ghzh_enabled';
@@ -992,6 +1427,18 @@
     menu('🔄 立即重新翻译', () => {
       restoreAll();
       runFull();
+    });
+    menu('🔍 检查未翻译文案（看控制台）', () => {
+      const list = collectUntranslated();
+      if (!list.length) {
+        console.log('%c[GitHub 中文化] 当前页面已全部中文化 🎉', 'color:#2da44e;font-weight:bold');
+        return;
+      }
+      console.log(
+        '%c[GitHub 中文化] 仍有 ' + list.length + ' 处英文文案，把 text 列加进词典即可：',
+        'color:#d29922;font-weight:bold'
+      );
+      console.table(list);
     });
 
     runFull();
