@@ -1,6 +1,23 @@
 # GitHub-zh-CN（GitHub 中文化油猴脚本）
 
+🔗 **Greasyfork 安装页：https://greasyfork.org/zh-CN/scripts/596199**
+
 将 GitHub 网页界面的英文文案实时替换为简体中文。纯 DOM 文本替换，不请求网络、不上传数据、不修改页面逻辑。
+
+> 声明：本脚本由 AI 生成。词典与匹配规则仍在持续完善，遇到漏翻欢迎提 Issue 反馈。
+
+## 安装
+
+1. 安装 [Tampermonkey](https://www.tampermonkey.net/)（或 Violentmonkey / Greasemonkey）。
+2. 打开 [Greasyfork 安装页](https://greasyfork.org/zh-CN/scripts/596199)，点「安装此脚本」。
+
+也可以从仓库直接安装：打开 `GitHub-zh-CN.user.js` 点击安装（无自动更新，需手动回装新版本）。
+
+| 来源 | 地址 |
+| --- | --- |
+| Greasyfork（推荐，支持自动更新） | https://greasyfork.org/zh-CN/scripts/596199 |
+| GitHub 仓库（源码） | https://github.com/saiyajiang/GitHub-zh-CN |
+| 问题反馈 | https://github.com/saiyajiang/GitHub-zh-CN/issues |
 
 ## 特性
 
@@ -12,11 +29,6 @@
 - **可开关**：油猴菜单里可暂停翻译 / 立即重新翻译，状态持久化。
 - 同时匹配 `github.com` 与 `gist.github.com`。
 
-## 安装
-
-1. 安装 [Tampermonkey](https://www.tampermonkey.net/)（或 Violentmonkey / Greasemonkey）。
-2. 打开 `GitHub-zh-CN.user.js`，点击安装；或直接从 Greasyfork 安装。
-
 ## 发布前必改
 
 编辑 `GitHub-zh-CN.user.js` 顶部的元数据块：
@@ -25,7 +37,8 @@
 | --- | --- |
 | `@namespace` | 换成你的仓库主页，如 `https://github.com/<你的ID>/GitHub-zh-CN`，不要填 greasyfork.org 地址 |
 | `@author` | 你的名字 / ID |
-| `@homepageURL` `@supportURL` | 换成你的仓库与 Issues 地址，路径保持首字母大写 |
+| `@homepageURL` | Greasyfork 安装页地址 |
+| `@supportURL` | Issues 地址，路径保持首字母大写 |
 | `@version` | 每次发布递增，Greasyfork 靠它检测更新 |
 
 仓库名建议直接用 `GitHub-zh-CN`，与脚本文件名保持一致。另外仓库根目录补一个 `LICENSE`（脚本声明为 MIT）。

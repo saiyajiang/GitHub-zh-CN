@@ -3,16 +3,16 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.1.0
-// @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）
-// @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）
-// @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched).
+// @version      1.1.1
+// @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
+// @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
+// @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
 // @author       saiyajiang
 // @license      MIT
 // @match        https://github.com/*
 // @match        https://gist.github.com/*
 // @icon         https://github.githubassets.com/favicons/favicon.svg
-// @homepageURL  https://github.com/saiyajiang/GitHub-zh-CN
+// @homepageURL  https://greasyfork.org/zh-CN/scripts/596199
 // @supportURL   https://github.com/saiyajiang/GitHub-zh-CN/issues
 // @run-at       document-end
 // @grant        GM_registerMenuCommand
