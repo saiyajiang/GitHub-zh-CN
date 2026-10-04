@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.4.0
+// @version      1.5.0
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -1247,12 +1247,28 @@
     'Making a note in your README': '在自述文件中添加说明',
     'Please type': '请输入',
     'to confirm.': '以确认。',
+    'to search': '进行搜索',
+    'Type / to search': '输入 / 进行搜索',
     'I understand the consequences, archive this repository': '我了解后果，归档此仓库',
 
     // 删除
     'I want to delete this repository': '我要删除此仓库',
     'Once you delete a repository, there is no going back. Please be certain.': '仓库删除后无法恢复，请确认。',
-    'Effects of deleting this repository': '删除此仓库的影响'
+    'Effects of deleting this repository': '删除此仓库的影响',
+
+    // 本轮报告补录（含单复数变体、带变量的整句）
+    'Issue permissions': '议题权限',
+    'Pull request permissions': '拉取请求权限',
+    'Get started with Discussions': '开始使用讨论区',
+    'General settings': '常规设置',
+    'Transfer this repository to another user or to an organization where you have the ability to create repositories.':
+      '将此仓库转移给其他用户，或转移到你有权创建仓库的组织。',
+    'Existing commit comments are not affected by this change and will remain viewable, editable, and deletable.':
+      '现有的提交评论不受此更改影响，仍可查看、编辑和删除。',
+    'You must select squashing or rebasing option.':
+      '你必须选择压缩或变基选项。',
+    'A commit message is required on at least one protected branch.':
+      '至少一条受保护分支要求填写提交信息。'
   };
 
   const DICT = Object.assign(
@@ -1484,14 +1500,23 @@
     return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
-  // 精确匹配索引：先原文，再小写（不敏感）
+  function norm(s) {
+    return s.replace(/\s+/g, ' ').trim();
+  }
+
+  // 精确匹配索引：原文 → 小写（不敏感）→ 空白归一（不敏感）
+  // 第三层是给长段落用的：GitHub 的 HTML 源码会在长句里换行和缩进，
+  // 光靠 trim() 去不掉中间的 \n，整句词条就永远命中不了。
   const EXACT = new Map();
   const EXACT_LOWER = new Map();
+  const EXACT_NORM = new Map();
   Object.keys(DICT).forEach((key) => {
     const value = DICT[key];
     if (!EXACT.has(key)) EXACT.set(key, value);
     const lower = key.toLowerCase();
     if (!EXACT_LOWER.has(lower)) EXACT_LOWER.set(lower, value);
+    const nk = norm(lower);
+    if (!EXACT_NORM.has(nk)) EXACT_NORM.set(nk, value);
   });
 
   // 短语替换用的大正则：长词优先，边界按首尾字符是否单词字符决定
@@ -1584,7 +1609,7 @@
     });
   }
 
-  function translateString(text, ignoreCase) {
+  function translateString(text, ignoreCase, noSplit) {
     if (!text || !text.trim()) return text;
 
     const trimmed = text.trim();
@@ -1596,10 +1621,31 @@
     if (hit == null && (ignoreCase || /\s/.test(trimmed))) {
       hit = EXACT_LOWER.get(trimmed.toLowerCase());
     }
+    // 长段落专属兜底：HTML 源码里的换行/缩进让整句词条差一点命中
+    if (hit == null && /\s/.test(trimmed)) {
+      const nf = norm(trimmed.toLowerCase());
+      hit = EXACT_NORM.get(nf);
+      // 节点可能从上一句末尾接过来，开头带 ". " / ", " 之类
+      if (hit == null) hit = EXACT_NORM.get(nf.replace(/^[\s.,;:!?'"()]+/, ''));
+    }
     if (hit != null) {
       const lead = /^\s*/.exec(text)[0];
       const tail = /\s*$/.exec(text)[0];
       return lead + hit + tail;
+    }
+
+    // 一个节点里塞了两句（"…option.\n A commit message is required…"）→ 拆句各翻
+    if (!noSplit && !ignoreCase && !/[\u4e00-\u9fa5]/.test(text)) {
+      const parts = text.split(/(?<=[.!?])\s+/);
+      if (parts.length > 1) {
+        let allHit = true;
+        const done = parts.map((s) => {
+          const v = translateString(s, ignoreCase, true);
+          if (v === s) allHit = false;   // 允许部分命中？不允许：半中半英更难读
+          return v;
+        });
+        if (allHit) return done.join(' ');
+      }
     }
 
     // 整段就是一个标识符（如 Stop-Ask-Questions-The-Stupid-Ways）→ 原样返回
@@ -1888,10 +1934,22 @@
     /^[\w.-]+\.(md|html|js|css|json|yml|yaml|xml|txt|svg|png|jpg|gif|sh|ps1)$/i
   ];
 
+  // 刻意保留英文的专有名词：残留它们不构成「未翻译」
+  const KEEP_LATIN = new Set([
+    'github', 'git', 'lfs', 'copilot', 'mcp', 'dco', 'api', 'url', 'readme',
+    'png', 'gif', 'jpg', 'jpeg', 'svg', 'html', 'css', 'js', 'json', 'mb', 'kb', 'gb',
+    'javascript', 'typescript', 'powershell', 'python', 'markdown', 'cookie',
+    'ssh', 'https', 'http', 'cli', 'pr', 'prs', 'id', 'ui', 'os', 'app', 'apps'
+  ]);
+
   function isNoise(t) {
     for (let i = 0; i < NOISE_RE.length; i++) {
       if (NOISE_RE[i].test(t)) return true;
     }
+    // 已翻好的句子里只剩专有名词 / 缩写 → 不算未翻译
+    const words = t.toLowerCase().match(/[a-z]{2,}/g) || [];
+    const leftover = words.filter((w) => !KEEP_LATIN.has(w));
+    if (words.length && leftover.length === 0) return true;
     return false;
   }
 
