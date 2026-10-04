@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.3.0
+// @version      1.4.0
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -1063,6 +1063,198 @@
     'Unsubscribe': '取消订阅'
   };
 
+  /* 1.24 仓库设置页
+   * 设置页几乎全是长说明文字。这些必须整句收录——靠单词拼接只会翻出半中半英，
+   * 而 1.23 之后的规则已禁止单词参与短语替换，长句也不再走短语替换。 */
+  const DICT_REPO_SETTINGS = {
+    // 侧栏分组
+    'Interaction limits': '互动限制',
+    'Code review limits': '代码审阅限制',
+    'Code, planning, and automation': '代码、规划与自动化',
+    'Policy insights': '策略洞察',
+    'Code review': '代码审阅',
+    'Cloud agent': '云端代理',
+    'Internet access': '联网访问',
+    'MCP servers': 'MCP 服务器',
+    'Agent suggestions for issues': '议题的代理建议',
+    'Advanced Security': '高级安全',
+    'Deploy keys': '部署密钥',
+    'GitHub Apps': 'GitHub 应用',
+    'GitHub Archive Program': 'GitHub 归档计划',
+
+    // 模板
+    'Template repositories let users generate new repositories with the same directory structure and files.':
+      '模板仓库可让用户生成具有相同目录结构和文件的新仓库。',
+    'Learn more about template repositories': '了解模板仓库的更多信息',
+    'Download template': '下载模板',
+
+    // 分支重命名
+    'Rename this branch': '重命名此分支',
+    'Rename branch': '重命名分支',
+
+    // 发布不可变性
+    'Enable release immutability': '启用发布不可变性',
+    'Disallow assets and tags from being modified once a release is published.':
+      '发布后禁止修改附件与标签。',
+
+    // 社交预览
+    'Social preview': '社交预览',
+    'Upload an image to customize your repository’s social media preview.':
+      '上传图片以自定义仓库的社交媒体预览。',
+    'Images should be at least 640×320px (1280×640px for best display).':
+      '图片至少应为 640×320 像素（最佳显示为 1280×640 像素）。',
+    'Upload an image…': '上传图片…',
+    'Remove image': '移除图片',
+    'Uploading...': '上传中…',
+    'This file is empty.': '此文件为空。',
+    'Please upload a picture smaller than 1 MB.': '请上传小于 1 MB 的图片。',
+    'Please upload a picture smaller than 10,000x10,000.': '请上传小于 10000×10000 的图片。',
+    'We only support PNG, GIF, or JPG pictures.': '我们仅支持 PNG、GIF 或 JPG 图片。',
+    'Something went really wrong and we can’t process that picture.': '出现了严重错误，我们无法处理该图片。',
+    'File contents don’t match the file extension.': '文件内容与扩展名不匹配。',
+
+    // 维基
+    'Wikis host documentation for your repository.': '维基用于存放仓库的文档。',
+    'Restrict editing to collaborators only': '仅限协作者编辑',
+    'Public wikis will still be readable by everyone.': '公开维基仍可被所有人阅读。',
+
+    // 议题权限
+    'Issues permissions': '议题权限',
+    'Creation allowed by:': '允许创建者：',
+    'All users': '全部用户',
+    'Anyone can create an issue': '任何人都可以创建议题',
+    'Collaborators only': '仅限协作者',
+    'Only collaborators can create issues': '仅协作者可以创建议题',
+    'If restricted, issues will still be readable by everyone who can see this repository.':
+      '即使受限，议题仍可被所有能看到此仓库的人阅读。',
+    'Get organized with issue templates': '用议题模板让工作更有条理',
+    'Give contributors issue templates that help you cut through the noise and help them push your project forward.':
+      '为贡献者提供议题模板，帮你过滤噪音，让他们推动项目前进。',
+    'Set up templates': '设置模板',
+
+    // 赞助
+    'Sponsorships help your community know how to financially support this repository.':
+      '赞助可让社区知道如何为此仓库提供资金支持。',
+    'Display a "Sponsor" button': '显示「赞助」按钮',
+    'Add links to GitHub Sponsors or third-party methods you accept for financial contributions to your project.':
+      '添加指向 GitHub 赞助者或你接受的第三方捐赠方式的链接。',
+    'Set up sponsor button': '设置赞助按钮',
+    'Include this code in the': '将此代码包含在',
+
+    // 讨论
+    'Discussions is the space for your community to have conversations, ask questions and post answers without opening issues.':
+      '讨论是社区交流的空间，可以提问和作答，无需创建议题。',
+    'Engage your community by having discussions right in your repository, where your community already lives':
+      '在仓库中直接开展讨论，让社区在它已经在的地方活跃起来',
+
+    // 拉取请求设置
+    'Pull requests allow others to suggest changes to your repository.': '拉取请求可让他人为你的仓库提出修改建议。',
+    'Pull requests permissions': '拉取请求权限',
+    'Anyone can create a pull request': '任何人都可以创建拉取请求',
+    'Only collaborators can create PRs': '仅协作者可以创建 PR',
+    'If restricted, pull requests will still be readable by everyone who can see this repository.':
+      '即使受限，拉取请求仍可被所有能看到此仓库的人阅读。',
+    'You must select at least one option': '你必须至少选择一个选项',
+    'Learn more about auto-merge': '了解自动合并的更多信息',
+
+    // 合并策略
+    'Allow merge commits': '允许合并提交',
+    'Add all commits from the head branch to the base branch with a merge commit.':
+      '将来源分支的所有提交以合并提交的方式加入基准分支。',
+    'Default commit message': '默认提交信息',
+    'Presented when merging a pull request with merge.': '以合并方式合并拉取请求时显示。',
+    'Default message': '默认信息',
+    'Pull request title': '拉取请求标题',
+    'Pull request title and description': '拉取请求标题与描述',
+    'Allow squash merging': '允许压缩合并',
+    'Combine all commits from the head branch into a single commit in the base branch.':
+      '将来源分支的所有提交合并为基准分支上的一个提交。',
+    'Presented when merging a pull request with squash.': '以压缩方式合并拉取请求时显示。',
+    'Pull request title and commit details': '拉取请求标题与提交详情',
+    'Allow rebase merging': '允许变基合并',
+    'Add all commits from the head branch onto the base branch individually.':
+      '将来源分支的所有提交逐个添加到基准分支上。',
+
+    // 分支更新 / 自动合并
+    'Control how and when users are prompted to update their branches when there are new changes available in the base branch.':
+      '控制当基准分支有新变更时，如何以及何时提示用户更新分支。',
+    'Always suggest updating pull request branches': '总是建议更新拉取请求分支',
+    'Whenever there are new changes available in the base branch, present an “update branch” option in the pull request.':
+      '当基准分支有新变更时，在拉取请求中显示「更新分支」选项。',
+    'You can allow setting pull requests to merge automatically once all required reviews and status checks have passed.':
+      '你可以允许在所有必需的审阅和状态检查通过后自动合并拉取请求。',
+    'Allow auto-merge': '允许自动合并',
+    'Waits for merge requirements to be met and then merges automatically.': '等待满足合并条件后自动合并。',
+    'After pull requests are merged, you can have head branches deleted automatically.':
+      '拉取请求合并后，可自动删除来源分支。',
+    'Automatically delete head branches': '自动删除来源分支',
+    'Deleted branches will still be able to be restored.': '已删除的分支仍可恢复。',
+
+    // 提交签名 / LFS / 推送限制
+    'Require contributors to sign off on web-based commits': '要求贡献者对网页端提交进行签名确认',
+    'Developer Certificate of Origin (DCO)': '开发者原创证书（DCO）',
+    'Learn more about signing off on commits': '了解提交签名确认的更多信息',
+    'Allow comments on individual commits': '允许对单个提交发表评论',
+    'Enabling this setting will allow anyone who can view this repository to add':
+      '启用此设置后，任何能看到此仓库的人都可以添加',
+    'commit comments': '提交评论',
+    'When creating source code archives, you can choose to include files stored using Git LFS in the archive.':
+      '创建源码归档时，可选择将 Git LFS 存储的文件一并打包。',
+    'Include Git LFS objects in archives': '在归档中包含 Git LFS 对象',
+    'Git LFS usage in archives is billed at the same rate as usage with the client.':
+      '归档中的 Git LFS 用量按客户端用量相同的费率计费。',
+    'Limit how many branches and tags can be updated in a single push': '限制单次推送可更新的分支与标签数量',
+    'Pushes will be rejected if they attempt to update more than this.': '若更新数量超过此值，推送将被拒绝。',
+    'Learn more about this setting': '了解此设置的更多信息',
+    ', and send us your': '，并向我们发送你的',
+    'Up to': '最多',
+    'branches and tags can be updated in a push': '个分支和标签可在一次推送中更新',
+    'After merging a pull request, linked issues can be closed automatically.': '拉取请求合并后，关联的议题可自动关闭。',
+    'Auto-close issues with merged linked pull requests': '关联拉取请求合并后自动关闭议题',
+    'Whenever linked pull requests have merged, auto-close the issue.': '关联的拉取请求合并后，自动关闭该议题。',
+
+    // 可见性 / 私有化
+    'Change to private': '改为私有',
+    'I want to make this repository private': '我要将此仓库设为私有',
+    'This repository is currently public.': '此仓库当前为公开。',
+    'Effects of making this repository private': '将此仓库设为私有的影响',
+
+    // 分支保护规则
+    'Disable branch protection rules': '停用分支保护规则',
+    'Disable branch protection rules enforcement and APIs': '停用分支保护规则的强制执行与 API',
+    'This will hide the branch protection settings and disable branch protection rules for this repository.':
+      '此操作将隐藏分支保护设置并停用此仓库的分支保护规则。',
+    'Disabling branch protection rules allows you to enforce branch and tag protections exclusively with repository Rules.':
+      '停用分支保护规则后，你可仅通过仓库规则来强制执行分支与标签保护。',
+    'This action will disable:': '此操作将停用：',
+    'Branch protection rule enforcement': '分支保护规则强制执行',
+    'Branch protection rule APIs': '分支保护规则 API',
+    'will be disabled as part of this action': '将随此操作一并停用',
+
+    // 转移 / 归档
+    'Transfer this repository to another user or to an organization where you have the ability to create repositories.':
+      '将此仓库转移给其他用户，或转移到你有权创建仓库的组织。',
+    'Mark this repository as archived and read-only.': '将此仓库标记为已归档且只读。',
+    'Archive repository': '归档仓库',
+    'This repository will become read-only.': '此仓库将变为只读。',
+    'You will still be able to fork the repository and unarchive it at any time.': '你仍可随时派生该仓库并取消归档。',
+    'All scheduled workflows will stop running.': '所有计划的工作流都将停止运行。',
+    'Security features will be interrupted:': '安全功能将中断：',
+    'Code scanning will be paused': '代码扫描将暂停',
+    'Before you archive, please consider:': '归档前请考虑：',
+    'Updating any repository settings': '更新任意仓库设置',
+    'Closing all open issues and pull requests': '关闭所有待处理的议题和拉取请求',
+    'Making a note in your README': '在自述文件中添加说明',
+    'Please type': '请输入',
+    'to confirm.': '以确认。',
+    'I understand the consequences, archive this repository': '我了解后果，归档此仓库',
+
+    // 删除
+    'I want to delete this repository': '我要删除此仓库',
+    'Once you delete a repository, there is no going back. Please be certain.': '仓库删除后无法恢复，请确认。',
+    'Effects of deleting this repository': '删除此仓库的影响'
+  };
+
   const DICT = Object.assign(
     {},
     DICT_COMMON,
@@ -1087,7 +1279,8 @@
     DICT_DASHBOARD,
     DICT_COPILOT,
     DICT_A11Y,
-    DICT_FILELIST
+    DICT_FILELIST,
+    DICT_REPO_SETTINGS
   );
 
   // 只做整段精确匹配的词，不参与长句短语替换（防半中半英）
@@ -1144,6 +1337,14 @@
         `${verb === 'Unwatch' ? '取消关注' : '取消订阅'}：${repo} 的${activity || '全部动态'}。${n} 位用户正在关注此仓库。点击更改订阅设置。`],
     // Committed by saiyajiang
     [/^Committed\s+by\s+(.+)$/i, (m, who) => `提交者：${who}`],
+
+    // 仓库级操作：Make X private / Delete owner/repo / Star X / Unstar X
+    // 单词（Star / Delete …）已不参与短语替换，这些靠整句规则兜底
+    [/^Make\s+([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)\s+private$/i, (m, r) => `将 ${r} 设为私有`],
+    [/^Delete\s+([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)$/i, (m, r) => `删除 ${r}`],
+    [/^Star\s+(.+)$/i, (m, r) => `星标 ${r}`],
+    [/^Unstar\s+(.+)$/i, (m, r) => `取消星标 ${r}`],
+    [/^(\d+)\s+branch protection rules?$/i, '$1 条分支保护规则'],
     // PR 合并说明：wants to merge 3 commits into main from feature
     [/\bwants to merge (\d[\d,]*)\s+commits?\s+into\s+(\S+)\s+from\s+(\S+)/gi,
       (m, n, base, head) => `希望将 ${n} 次提交从 ${head} 合并到 ${base}`],
@@ -1295,9 +1496,17 @@
 
   // 短语替换用的大正则：长词优先，边界按首尾字符是否单词字符决定
   // 歧义词（Open / Type / No …）不进这条正则，只走整段精确匹配
+  /* 短语替换的两条硬约束（针对设置页长说明文字反复出现「半中半英」）：
+   *   1) 只用「多词」词条。单词（Code / Upload / Wiki / Add / Star …）只走整段精确匹配，
+   *      否则 "Code review limits" 会变成 "代码 review limits"。
+   *   2) 超过 PHRASE_MAX_WORDS 个单词的长句直接跳过短语替换，
+   *      保持纯英文——比半中半英更好读。
+   */
+  const PHRASE_MAX_WORDS = 8;
+
   const PHRASE_RE = new RegExp(
     Object.keys(DICT)
-      .filter((key) => !EXACT_ONLY.has(key.toLowerCase()))
+      .filter((key) => /\s/.test(key) && !EXACT_ONLY.has(key.toLowerCase()))
       .sort((a, b) => b.length - a.length)
       .map((key) => {
         const body = escapeRegExp(key);
@@ -1358,8 +1567,10 @@
     return out;
   }
 
-  function phraseReplace(text, ignoreCase) {
+  function phraseReplace(text, ignoreCase, wordCount) {
     if (text.length > 400) return text;
+    // 长句（设置页的说明文字）不做短语替换，避免翻出半中半英
+    if (wordCount != null && wordCount > PHRASE_MAX_WORDS) return text;
     const re = ignoreCase ? PHRASE_RE_I : PHRASE_RE;
     re.lastIndex = 0;
     return text.replace(re, (m) => {
@@ -1403,7 +1614,8 @@
     let out = applyPatterns(text);
 
     // 3) 长句内的短语替换（标识符片段先保护起来，跑完再还原）
-    out = protectIdentifiers(out, (t) => phraseReplace(t, !!ignoreCase));
+    const wordCount = trimmed.split(/\s+/).length;
+    out = protectIdentifiers(out, (t) => phraseReplace(t, !!ignoreCase, wordCount));
 
     return out;
   }
