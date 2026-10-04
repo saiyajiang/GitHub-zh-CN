@@ -38,6 +38,7 @@
 - **词典可维护**：900+ 条词条，按 19 个场景分组（通用 / 导航 / 个人页 / 仓库 / 代码 / Issue·PR / Actions / 设置 / 探索 / Gist / 安全 / 洞察 / 通知 / 搜索 / Agents / 编辑器 / 分支 / 页脚 / 连接词），加词只需加一行。
 - **漏翻可自查**：油猴菜单「🔍 检查未翻译文案」会把当前页面残留的英文列成控制台表格，照着补词典即可。
 - **不误伤**：跳过代码块（`<pre>`、`<code>`、`.blob-code`）、用户输入框内容、README 与评论正文（`.markdown-body`、`.comment-body`），只翻译界面文案。
+- **仓库名保护**：`saiyajiang/Bilibili-Search-Replace` 里的 `Search`、`Stop-Ask-Questions` 里的 `Stop` 不会被翻——标识符（仓库名 / 分支名 / tag / 文件名）通过三重防线识别并原样保留。
 - **覆盖动态内容**：`MutationObserver` 增量翻译 + 监听 `turbo:load` / `pjax:end` / `popstate`，SPA 局部跳转后仍生效。
 - **数字与日期**：`1,234 commits` → `1,234 次提交`、`on Jul 5, 2024` → `于 2024 年 7 月 5 日`、`3 days ago` → `3 天前`（含 `<relative-time>` 的 Shadow DOM）。
 - **可开关**：油猴菜单里可暂停翻译 / 立即重新翻译，状态持久化。
@@ -85,6 +86,16 @@ const DICT_REPO = {
 ⚠️ **`PATTERNS` 的顺序很关键**：数组顶部是「组合优先规则」区块（如 `wants to merge N commits into X from Y`、`N commits ahead of`），必须排在通用计数规则之前，否则 `2 commits ahead of main` 会先被 `N commits` 吃掉，变成「2 次提交 ahead of」。新增组合规则请一律放在这个区块里。
 
 分支名、仓库名、用户名、`Dependabot`、`Copilot`、`HTTPS` 等专有名词不会被翻译，这是刻意保留的。
+
+### 为什么仓库名不会被翻
+
+仓库名经常长得跟界面文案一模一样（`Search`、`Stop`、`Code` 都可能是仓库名的一部分），光靠词典区分不开。脚本用了三重防线：
+
+1. **标识符形态识别**（主力）：不含空格的连续串，只要符合 `kebab-case` / `snake_case` / `owner/repo` / `x.y` 形态（`Bilibili-Search-Replace`、`foo_bar`、`index.js`、`v1.2.3`），就整体保护起来，短语替换跑完再原样还原。含空格的 `Search this repository` 不受影响，照常翻译。
+2. **自链接判定**：`<a>` 的可视文本与 `href` 路径完全一致时，判定为仓库名 / 分支名链接，跳过。`/pulls` → "Pull requests" 这种导航项不会被误判。
+3. **容器选择器**：侧栏仓库列表、分支选择器、release tag 等容器直接跳过。
+
+⚠️ 已知边界：单单词仓库名（如仓库就叫 `Search`）无法与界面文案区分，仍会被翻译。这类情况可在词典里删掉对应词条，或用菜单命令暂停翻译。
 
 > 提示：GitHub 的 `Actions`、`Copilot` 等功能名默认保留英文，避免与技术术语混淆；如需翻译，自行在词典里加一行即可。
 

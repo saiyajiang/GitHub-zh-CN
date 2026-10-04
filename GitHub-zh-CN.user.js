@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.2.1
+// @version      1.2.2
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -1043,6 +1043,19 @@
   const TRANSLATE_ATTRS = ['placeholder', 'aria-label', 'title', 'alt'];
 
   // 文本节点：整块跳过（含输入框内容、代码、用户生成内容）
+  // 仓库名 / 分支名 / tag 名是标识符，不是界面文案，一律不翻
+  const IDENT_SELECTOR = [
+    '[data-testid^="nav-repo"]',
+    '.AppNav-repositories',
+    '[data-testid="repo-list"]',
+    '[data-testid="branch-name"]',
+    '[data-testid="tag-name"]',
+    '.css-truncate-target',
+    'a[href*="/tree/"]',
+    'a[href*="/commits/"]',
+    'a[href*="/releases/tag/"]'
+  ].join(',');
+
   const SKIP_SELECTOR = [
     'script', 'style', 'noscript', 'template', 'svg', 'math',
     'textarea', 'input', 'select', 'option', 'button[data-clipboard-text]',
@@ -1050,7 +1063,8 @@
     '[translate="no"]', '[contenteditable=""]', '[contenteditable="true"]',
     '.markdown-body', '.comment-body', '.js-comment-body',
     '.blob-code', '.blob-code-inner', '.file-content', '.highlight',
-    '[data-testid="comment-body"]'
+    '[data-testid="comment-body"]',
+    IDENT_SELECTOR
   ].join(',');
 
   // 属性（placeholder / aria-label / title）：输入框本身要放行，否则搜不到框的提示文案
@@ -1060,7 +1074,10 @@
     '[translate="no"]',
     '.markdown-body', '.comment-body', '.js-comment-body',
     '.blob-code', '.blob-code-inner', '.file-content', '.highlight',
-    '[data-testid="comment-body"]'
+    '[data-testid="comment-body"]',
+    '[data-testid^="nav-repo"]',
+    '.AppNav-repositories',
+    '[data-testid="repo-list"]'
   ].join(',');
 
   function escapeRegExp(s) {
@@ -1094,6 +1111,37 @@
   // aria-label / title 等属性里的短语常是全小写（如 "Notifications and alerts"），
   // 属性场景额外用一份大小写不敏感的版本兜底；文本节点仍保持敏感以防误伤用户内容。
   const PHRASE_RE_I = new RegExp(PHRASE_RE.source, 'gi');
+
+  /* —— 标识符保护 ——
+   * 仓库名 / 分支名 / tag / 文件名常常长得跟界面文案一模一样：
+   *   saiyajiang/Bilibili-Search-Replace   里的 Search
+   *   Stop-Ask-Questions-The-Stupid-Ways   里的 Stop
+   * 这些是用户资产，不是界面文案，绝不能翻。
+   * 判定为「标识符」的两种形态（都是不含空格的连续串）：
+   *   1) kebab / snake / 点分：Bilibili-Search-Replace、foo_bar、index.js、v1.2.3
+   *   2) owner/repo 路径：saiyajiang/Bilibili-Search-Replace
+   * 命中的片段先用占位符藏起来，短语替换跑完再原样还原。
+   */
+  const IDENT_RE =
+    /[A-Za-z0-9_\u4e00-\u9fa5]+(?:[-_.][A-Za-z0-9_\u4e00-\u9fa5]+)+|[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+/g;
+  const IDENT_HOLDER = /\u0000(\d+)\u0000/g;
+
+  function protectIdentifiers(text, translate) {
+    if (!IDENT_RE.test(text)) return translate(text);
+    IDENT_RE.lastIndex = 0;
+    const kept = [];
+    const masked = text.replace(IDENT_RE, (m) => {
+      kept.push(m);
+      return '\u0000' + (kept.length - 1) + '\u0000';
+    });
+    const out = translate(masked);
+    return out.indexOf('\u0000') === -1
+      ? out
+      : out.replace(IDENT_HOLDER, (m, i) => {
+          const v = kept[Number(i)];
+          return v == null ? m : v;
+        });
+  }
 
   function applyPatterns(text) {
     let out = text;
@@ -1134,11 +1182,19 @@
       return lead + hit + tail;
     }
 
+    // 整段就是一个标识符（如 Stop-Ask-Questions-The-Stupid-Ways）→ 原样返回
+    if (IDENT_RE.test(trimmed)) {
+      IDENT_RE.lastIndex = 0;
+      const m = trimmed.match(IDENT_RE);
+      if (m && m[0] === trimmed) return text;
+    }
+    IDENT_RE.lastIndex = 0;
+
     // 2) 正则规则（数字、日期等）先跑，避免 "12 Open" 被短语替换抢先成 "12 待处理"
     let out = applyPatterns(text);
 
-    // 3) 长句内的短语替换
-    out = phraseReplace(out, !!ignoreCase);
+    // 3) 长句内的短语替换（标识符片段先保护起来，跑完再还原）
+    out = protectIdentifiers(out, (t) => phraseReplace(t, !!ignoreCase));
 
     return out;
   }
@@ -1179,8 +1235,26 @@
     }
   }
 
+  // 链接的可视文本若与 href 路径完全一致，说明它就是仓库名 / 分支名 / 用户名，
+  // 而不是界面文案（"Pull requests" 的 href 是 /xxx/repo/issues，不会命中）。
+  function isSelfLink(node) {
+    const el = node.parentElement;
+    if (!el || el.tagName !== 'A') return false;
+    const href = el.getAttribute('href');
+    if (!href) return false;
+    let path;
+    try {
+      path = decodeURIComponent(new URL(href, location.href).pathname).replace(/^\//, '');
+    } catch (e) {
+      return false;
+    }
+    if (!path) return false;
+    return path === node.nodeValue.trim();
+  }
+
   function collectTextNodes(root, out) {
     if (root.nodeType === 3) {
+      if (isSelfLink(root)) return out;
       out.push(root);
       return out;
     }
@@ -1191,6 +1265,7 @@
       if (!node.nodeValue || !node.nodeValue.trim()) continue;
       const parent = node.parentElement;
       if (!parent || shouldSkip(parent)) continue;
+      if (isSelfLink(node)) continue;
       out.push(node);
     }
     return out;
