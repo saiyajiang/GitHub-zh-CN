@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.2.2
+// @version      1.2.3
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -238,6 +238,9 @@
     'Code space': '代码空间',
     'Notifications': '通知',
     'Notification': '通知',
+    'Notifications and alerts': '通知与警报',
+    'Issues and pull requests': '议题与拉取请求',
+    'Search issues and pull requests': '搜索议题和拉取请求',
     'Create new...': '新建…',
     'New repository': '新建仓库',
     'Import repository': '导入仓库',
@@ -912,12 +915,105 @@
     'All rights reserved': '保留所有权利'
   };
 
-  // 1.19 连接词（放最后一层，仅在短语替换阶段兜底，精确词条优先）
-  const DICT_CONNECTORS = {
-    'and': '和',
-    'or': '或',
-    'with': '含',
-    'from': '来自'
+  /* 1.19 歧义词：只做「整段精确匹配」，绝不参与长句内的短语替换。
+   * 例：Open 既可能是状态「待处理」，也可能是动词「打开」（Open quick search dialog）；
+   *     Type 既可能是「类型」，也可能是动词「输入」（type / to search）；
+   *     No 既可能是「否」，也可能是「没有」（No issues found）。
+   * 这些词放进短语替换会把整句翻成半中半英，比全英文更难读。 */
+  const DICT_AMBIGUOUS = {
+    'Open': '待处理',
+    'Closed': '已关闭',
+    'Type': '类型',
+    'Read': '已读',
+    'Selected': '已选择',
+    'Top': '顶部',
+    'Latest': '最新',
+    'No': '否',
+    'Now': '现在',
+    'Bottom': '底部',
+    'Any': '任意',
+    'None': '无'
+  };
+
+  // 1.20 仪表盘 / 首页（GitHub 新版 dashboard）
+  const DICT_DASHBOARD = {
+    'Feed': '动态',
+    'Dashboard menu': '仪表盘菜单',
+    'Dashboard preview options': '仪表盘预览选项',
+    'Switch to classic dashboard': '切换到经典仪表盘',
+    'Give feedback': '提供反馈',
+    'Give dashboard feedback': '提供仪表盘反馈',
+    'How satisfied are you with this dashboard?': '你对这个仪表盘的满意度如何？',
+    'Very dissatisfied': '非常不满意',
+    'Dissatisfied': '不满意',
+    'Satisfied': '满意',
+    'Very satisfied': '非常满意',
+    'What can we improve?': '我们可以改进什么？',
+    'Send feedback': '发送反馈',
+    'Top repositories': '常用仓库',
+    'Search for repositories': '搜索仓库',
+    'Reload': '重新加载',
+    'Please reload this page': '请重新加载本页',
+    'There was an error while loading.': '加载时出现错误。',
+    'Uh oh!': '哎呀！',
+    'You have no unread notifications': '你没有未读通知',
+    'No pull requests found, try a different filter.': '未找到拉取请求，换个筛选条件试试。',
+    'No issues found, try a different filter.': '未找到议题，换个筛选条件试试。',
+    'Latest from our changelog': '来自更新日志的最新动态',
+    'View changelog': '查看更新日志',
+    'You can’t perform that action at this time.': '你目前无法执行该操作。',
+    'You signed in with another tab or window.': '你已在另一个标签页或窗口中登录。',
+    'You signed out in another tab or window.': '你已在另一个标签页或窗口中退出登录。',
+    'You switched accounts on another tab or window.': '你已在另一个标签页或窗口中切换账号。',
+    'Reload to refresh your session.': '重新加载以刷新你的会话。',
+    'to refresh your session.': '以刷新你的会话。'
+  };
+
+  // 1.21 Copilot / 聊天输入
+  const DICT_COPILOT = {
+    'Ask': '询问',
+    'Ask anything or type @ to add context': '询问任何内容，或输入 @ 添加上下文',
+    'Ask anything or type @ to add context with Copilot': '询问任何内容，或输入 @ 添加上下文（Copilot）',
+    'Select repository to attach to discussion': '选择要附加到讨论的仓库',
+    'Select repository to attach to discussion with Copilot': '选择要附加到讨论的仓库（Copilot）',
+    'Chat commands': '对话命令',
+    'Write code': '编写代码',
+    'Debug': '调试',
+    'Optimized for:': '针对以下场景优化：',
+    'Optimized for: Balance': '针对以下场景优化：均衡',
+    'Balance': '均衡',
+    'Auto': '自动',
+    'View token usage': '查看令牌用量',
+    'Send now': '立即发送',
+    'Add files, and spaces': '添加文件和空格',
+    'Ask Copilot': '询问 Copilot',
+    'Chat with Copilot': '与 Copilot 对话',
+    'Register now': '立即注册'
+  };
+
+  // 1.22 无障碍 / 导航结构（多为 aria-label，视觉不可见，但翻译利于读屏）
+  const DICT_A11Y = {
+    'Homepage': '主页',
+    'Footer': '页脚',
+    'Footer navigation': '页脚导航',
+    'Site navigation': '站点导航',
+    'Global navigation menu': '全局导航菜单',
+    'Breadcrumbs': '面包屑导航',
+    'Open quick search dialog, type / to search': '打开快速搜索对话框，输入 / 进行搜索',
+    'Open user navigation menu': '打开用户导航菜单',
+    'Open Copilot…': '打开 Copilot…',
+    'Community': '社区',
+    'Menu': '菜单',
+    'Navigation': '导航',
+    'Dialog': '对话框',
+    'Options': '选项',
+    'Usage': '用量',
+    'Changelog': '更新日志',
+    'Context': '上下文',
+    'Improve': '改进',
+    'Token': '令牌',
+    'Spaces': '空格',
+    'Files': '文件'
   };
 
   const DICT = Object.assign(
@@ -940,8 +1036,14 @@
     DICT_EDITOR,
     DICT_BRANCH,
     DICT_FOOTER,
-    DICT_CONNECTORS
+    DICT_AMBIGUOUS,
+    DICT_DASHBOARD,
+    DICT_COPILOT,
+    DICT_A11Y
   );
+
+  // 只做整段精确匹配的词，不参与长句短语替换（防半中半英）
+  const EXACT_ONLY = new Set(Object.keys(DICT_AMBIGUOUS).map((k) => k.toLowerCase()));
 
   /* =========================================================================
    * 2. 正则规则：处理带数字 / 日期 / 单复数变化的文案
@@ -959,6 +1061,27 @@
 
   const PATTERNS = [
     /* —— 组合优先规则：必须排在通用计数规则之前，否则会被 "N commits" 抢先命中 —— */
+    // 问候语：Good evening, saiyajiang!
+    [/\bGood\s+(morning|afternoon|evening|night)\b/gi,
+      (m, t) => ({ morning: '早上好', afternoon: '下午好', evening: '晚上好', night: '晚安' }[t.toLowerCase()])],
+    // 未找到：No pull requests found / No issues found
+    [/\bNo\s+(issues?|pull requests?|results?|repositories|notifications?|discussions?|commits?|releases?|files?|branches?|workflows?|alerts?)\s+found\b/gi,
+      (m, n) => '未找到' + ({
+        issue: '议题', issues: '议题',
+        'pull request': '拉取请求', 'pull requests': '拉取请求',
+        result: '结果', results: '结果',
+        repositories: '仓库', repository: '仓库',
+        notification: '通知', notifications: '通知',
+        discussion: '讨论', discussions: '讨论',
+        commit: '提交', commits: '提交',
+        release: '发布', releases: '发布',
+        file: '文件', files: '文件',
+        branch: '分支', branches: '分支',
+        workflow: '工作流', workflows: '工作流',
+        alert: '警报', alerts: '警报'
+      }[n.toLowerCase()] || n)],
+    // Reload to refresh your session.
+    [/\bReload\s+to\s+refresh\b/gi, '重新加载以刷新'],
     // PR 合并说明：wants to merge 3 commits into main from feature
     [/\bwants to merge (\d[\d,]*)\s+commits?\s+into\s+(\S+)\s+from\s+(\S+)/gi,
       (m, n, base, head) => `希望将 ${n} 次提交从 ${head} 合并到 ${base}`],
@@ -1043,6 +1166,18 @@
   const TRANSLATE_ATTRS = ['placeholder', 'aria-label', 'title', 'alt'];
 
   // 文本节点：整块跳过（含输入框内容、代码、用户生成内容）
+  // 读屏专用文本（视觉不可见）：翻了看不见，还会污染「未翻译检测」结果
+  const HIDDEN_SELECTOR = [
+    '.sr-only',
+    '[class*="sr-only"]',
+    '[class*="VisuallyHidden"]',
+    '[class*="visually-hidden"]',
+    '[aria-hidden="true"]'
+  ].join(',');
+
+  // owner/repo 形态的整段文本，无论挂在哪个容器里都是仓库名
+  const OWNER_REPO_RE = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.\u4e00-\u9fa5-]+$/;
+
   // 仓库名 / 分支名 / tag 名是标识符，不是界面文案，一律不翻
   const IDENT_SELECTOR = [
     '[data-testid^="nav-repo"]',
@@ -1064,7 +1199,8 @@
     '.markdown-body', '.comment-body', '.js-comment-body',
     '.blob-code', '.blob-code-inner', '.file-content', '.highlight',
     '[data-testid="comment-body"]',
-    IDENT_SELECTOR
+    IDENT_SELECTOR,
+    HIDDEN_SELECTOR
   ].join(',');
 
   // 属性（placeholder / aria-label / title）：输入框本身要放行，否则搜不到框的提示文案
@@ -1077,7 +1213,8 @@
     '[data-testid="comment-body"]',
     '[data-testid^="nav-repo"]',
     '.AppNav-repositories',
-    '[data-testid="repo-list"]'
+    '[data-testid="repo-list"]',
+    HIDDEN_SELECTOR
   ].join(',');
 
   function escapeRegExp(s) {
@@ -1095,8 +1232,10 @@
   });
 
   // 短语替换用的大正则：长词优先，边界按首尾字符是否单词字符决定
+  // 歧义词（Open / Type / No …）不进这条正则，只走整段精确匹配
   const PHRASE_RE = new RegExp(
     Object.keys(DICT)
+      .filter((key) => !EXACT_ONLY.has(key.toLowerCase()))
       .sort((a, b) => b.length - a.length)
       .map((key) => {
         const body = escapeRegExp(key);
@@ -1163,7 +1302,11 @@
     re.lastIndex = 0;
     return text.replace(re, (m) => {
       let v = DICT[m];
-      if (v == null && ignoreCase) v = EXACT_LOWER.get(m.toLowerCase());
+      if (v == null && ignoreCase) {
+        const k = m.toLowerCase();
+        // 歧义词不做大小写兜底，否则 "open …dialog" 里的 open 会被翻成「待处理」
+        if (!EXACT_ONLY.has(k)) v = EXACT_LOWER.get(k);
+      }
       return v == null ? m : v;
     });
   }
@@ -1255,6 +1398,7 @@
   function collectTextNodes(root, out) {
     if (root.nodeType === 3) {
       if (isSelfLink(root)) return out;
+      if (OWNER_REPO_RE.test(root.nodeValue.trim())) return out;
       out.push(root);
       return out;
     }
@@ -1266,6 +1410,7 @@
       const parent = node.parentElement;
       if (!parent || shouldSkip(parent)) continue;
       if (isSelfLink(node)) continue;
+      if (OWNER_REPO_RE.test(node.nodeValue.trim())) continue;
       out.push(node);
     }
     return out;

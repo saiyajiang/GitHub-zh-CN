@@ -94,8 +94,29 @@ const DICT_REPO = {
 1. **标识符形态识别**（主力）：不含空格的连续串，只要符合 `kebab-case` / `snake_case` / `owner/repo` / `x.y` 形态（`Bilibili-Search-Replace`、`foo_bar`、`index.js`、`v1.2.3`），就整体保护起来，短语替换跑完再原样还原。含空格的 `Search this repository` 不受影响，照常翻译。
 2. **自链接判定**：`<a>` 的可视文本与 `href` 路径完全一致时，判定为仓库名 / 分支名链接，跳过。`/pulls` → "Pull requests" 这种导航项不会被误判。
 3. **容器选择器**：侧栏仓库列表、分支选择器、release tag 等容器直接跳过。
+4. **形态直判**：整段文本只要符合 `owner/repo` 形态（`saiyajiang/Bilibili-Search-Replace`），无论挂在什么容器下一律跳过。
+
+另外 `.sr-only` / `*VisuallyHidden*` / `[aria-hidden="true"]` 这类读屏专用文本不翻译——翻了也看不见，还会污染「未翻译检测」的结果。
 
 ⚠️ 已知边界：单单词仓库名（如仓库就叫 `Search`）无法与界面文案区分，仍会被翻译。这类情况可在词典里删掉对应词条，或用菜单命令暂停翻译。
+
+### 歧义词：只做整段精确匹配
+
+有些英文单词在 GitHub 上有两种词性，翻错一个就会把整句变成半中半英，比不翻更难读：
+
+| 词 | 状态 / 名词 | 动词 | 错误示例 |
+| --- | --- | --- | --- |
+| `Open` | 待处理 | **打开** | "Open quick search dialog" → ~~待处理 quick search dialog~~ |
+| `Type` | 类型 | **输入** | "type / to search" → ~~类型 / to search~~ |
+| `No` | 否 | **没有** | "No issues found" → ~~否 issues found~~ |
+| `Read` | 已读 | **阅读** | "Read the docs" → ~~已读 the docs~~ |
+| `Top` / `Latest` | 顶部 / 最新 | — | "Latest from our changelog" → ~~最新 from our changelog~~ |
+
+这些词统一放进 `DICT_AMBIGUOUS`，**只参与整段精确匹配，不参与长句内的短语替换**（在 `EXACT_ONLY` 里登记，构建 `PHRASE_RE` 时过滤掉）。
+
+所以：节点里单独一个 `Open` → 照常翻成「待处理」；而 `Open quick search dialog` 走组合词条翻成「打开快速搜索对话框」。
+
+⚠️ **不要往词典里加 `and` / `or` / `with` / `from` 这类连接词。** 早期版本加过，结果 `Chat with Copilot` 变成「对话 含 Copilot」——整句半中半英。这类词请一律整句收录（如 `'Chat with Copilot': '与 Copilot 对话'`）。
 
 > 提示：GitHub 的 `Actions`、`Copilot` 等功能名默认保留英文，避免与技术术语混淆；如需翻译，自行在词典里加一行即可。
 
