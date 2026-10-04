@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.2.3
+// @version      1.3.0
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -932,7 +932,14 @@
     'Now': '现在',
     'Bottom': '底部',
     'Any': '任意',
-    'None': '无'
+    'None': '无',
+    'Name': '名称',
+    'Pin': '置顶',
+    'Outline': '大纲',
+    'Resources': '资源',
+    'Cancel': '取消',
+    'Unwatch': '取消关注',
+    'Unsubscribe': '取消订阅'
   };
 
   // 1.20 仪表盘 / 首页（GitHub 新版 dashboard）
@@ -1016,6 +1023,46 @@
     'Files': '文件'
   };
 
+  // 1.23 文件列表 / 仓库概览
+  const DICT_FILELIST = {
+    'Folders and files': '文件夹和文件',
+    'Repository files navigation': '仓库文件导航',
+    'Repository navigation': '仓库导航',
+    'Last commit message': '最近提交信息',
+    'Last commit date': '最近提交时间',
+    'View commit history for this file.': '查看此文件的提交历史。',
+    'Committed by': '提交者',
+    'Go to branches page': '前往分支页面',
+    'Go to tags page': '前往标签页面',
+    'Drop to upload your files': '拖拽以上传你的文件',
+    'Publish your first package': '发布你的第一个软件包',
+    'Create a new release': '创建新发布',
+    'Switch repository': '切换仓库',
+    'Edit file': '编辑文件',
+    'Edit repository metadata': '编辑仓库元数据',
+    'GitHub Homepage': 'GitHub 主页',
+    'Dismiss alert': '忽略警报',
+    'Dismiss error': '忽略错误',
+    'Open in github.dev': '在 github.dev 中打开',
+    'Open in a new github.dev tab': '在新的 github.dev 标签页中打开',
+    'Open in codespace': '在代码空间中打开',
+    'Open more actions menu': '打开更多操作菜单',
+    'Open commit details': '打开提交详情',
+    'All repositories': '全部仓库',
+    'All issues': '全部议题',
+    'All pull requests': '全部拉取请求',
+    'Star lists': '星标列表',
+    'View all files': '查看全部文件',
+    'what you say': '你想说什么',
+    'Resources': '资源',
+    'Outline': '大纲',
+    'Pin': '置顶',
+    'Name': '名称',
+    'Cancel': '取消',
+    'Unwatch': '取消关注',
+    'Unsubscribe': '取消订阅'
+  };
+
   const DICT = Object.assign(
     {},
     DICT_COMMON,
@@ -1039,7 +1086,8 @@
     DICT_AMBIGUOUS,
     DICT_DASHBOARD,
     DICT_COPILOT,
-    DICT_A11Y
+    DICT_A11Y,
+    DICT_FILELIST
   );
 
   // 只做整段精确匹配的词，不参与长句短语替换（防半中半英）
@@ -1082,6 +1130,20 @@
       }[n.toLowerCase()] || n)],
     // Reload to refresh your session.
     [/\bReload\s+to\s+refresh\b/gi, '重新加载以刷新'],
+
+    // 文件列表 aria-label 后缀：assets, (Directory) / README.md, (File)
+    [/,\s*\(Directory\)/g, '，目录'],
+    [/,\s*\(File\)/g, '，文件'],
+
+    // 置顶 / 星标 / 关注 按钮：Pin X to your profile、Star X
+    [/^Pin\s+(.+?)\s+to\s+your\s+profile$/i, (m, r) => `将 ${r} 置顶到你的主页`],
+    [/^You own\s+(.+?)\s+and are not a member of any organizations$/i,
+      (m, r) => `你拥有 ${r}，且不属于任何组织`],
+    [/^(Unwatch|Unsubscribe):\s*(.+?)\s+in\s+(.+?)\.\s*(\d+)\s+users?\s+is\s+watching\s+this\s+repository\.\s*Click\s+to\s+change\s+subscription\s+settings\.?$/i,
+      (m, verb, activity, repo, n) =>
+        `${verb === 'Unwatch' ? '取消关注' : '取消订阅'}：${repo} 的${activity || '全部动态'}。${n} 位用户正在关注此仓库。点击更改订阅设置。`],
+    // Committed by saiyajiang
+    [/^Committed\s+by\s+(.+)$/i, (m, who) => `提交者：${who}`],
     // PR 合并说明：wants to merge 3 commits into main from feature
     [/\bwants to merge (\d[\d,]*)\s+commits?\s+into\s+(\S+)\s+from\s+(\S+)/gi,
       (m, n, base, head) => `希望将 ${n} 次提交从 ${head} 合并到 ${base}`],
@@ -1316,9 +1378,13 @@
 
     const trimmed = text.trim();
 
-    // 1) 整段精确命中（大小写不敏感）
+    // 1) 整段精确命中
+    //    先按原样查；大小写不敏感兜底仅用于属性，或多词短语。
+    //    单靠「独词 + 大小写不敏感」会把目录名 docs 当成导航项 Docs 翻成「文档」。
     let hit = EXACT.get(trimmed);
-    if (hit == null) hit = EXACT_LOWER.get(trimmed.toLowerCase());
+    if (hit == null && (ignoreCase || /\s/.test(trimmed))) {
+      hit = EXACT_LOWER.get(trimmed.toLowerCase());
+    }
     if (hit != null) {
       const lead = /^\s*/.exec(text)[0];
       const tail = /\s*$/.exec(text)[0];
@@ -1392,12 +1458,29 @@
       return false;
     }
     if (!path) return false;
-    return path === node.nodeValue.trim();
+    const text = node.nodeValue.trim();
+    if (path === text) return true;      // 整条路径：owner/repo
+    // 路径最后一段：文件列表里的 docs / wiki / posts / assets 都是目录名与文件名
+    // 必须大小写敏感 —— 否则 /issues 会命中文本 "Issues"，把导航项误挡掉
+    const last = path.split('/').pop();
+    return last === text;
+  }
+
+  // 提交信息（commit message）与提交哈希都是用户内容
+  function isCommitText(el) {
+    if (!el) return false;
+    const a = el.tagName === 'A' ? el : el.closest('a');
+    if (a) {
+      const href = a.getAttribute('href') || '';
+      if (href.indexOf('/commit/') !== -1) return true;
+    }
+    return false;
   }
 
   function collectTextNodes(root, out) {
     if (root.nodeType === 3) {
       if (isSelfLink(root)) return out;
+      if (isCommitText(root.parentElement)) return out;
       if (OWNER_REPO_RE.test(root.nodeValue.trim())) return out;
       out.push(root);
       return out;
@@ -1410,6 +1493,7 @@
       const parent = node.parentElement;
       if (!parent || shouldSkip(parent)) continue;
       if (isSelfLink(node)) continue;
+      if (isCommitText(parent)) continue;
       if (OWNER_REPO_RE.test(node.nodeValue.trim())) continue;
       out.push(node);
     }
@@ -1445,6 +1529,9 @@
     for (let j = 0; j < elements.length; j++) {
       const el = elements[j];
       if (shouldSkip(el, true)) continue;
+      // 目录名/文件名/提交信息的 title、aria-label 同样不翻
+      if (isCommitText(el)) continue;
+      if (OWNER_REPO_RE.test((el.getAttribute('title') || '').trim())) continue;
       for (let k = 0; k < TRANSLATE_ATTRS.length; k++) {
         const name = TRANSLATE_ATTRS[k];
         if (!el.hasAttribute(name)) continue;
@@ -1580,15 +1667,36 @@
    * 6. 未翻译文案检测（维护用）
    * ========================================================================= */
 
+  // 看起来像标识符、翻了反而有害的：文件名、扩展名、sha、语言名、版权
+  const NOISE_RE = [
+    /^[0-9a-f]{7,40}$/i,           // commit sha
+    /^@?[A-Za-z0-9_-]+$/,          // 单个不含空格的词，极可能是文件名 / 用户名
+    /^©/,
+    /^[\w.-]+:\s*[\d.]+%$/,        // JavaScript: 49.7%
+    /^[\w.-]+\.(md|html|js|css|json|yml|yaml|xml|txt|svg|png|jpg|gif|sh|ps1)$/i
+  ];
+
+  function isNoise(t) {
+    for (let i = 0; i < NOISE_RE.length; i++) {
+      if (NOISE_RE[i].test(t)) return true;
+    }
+    return false;
+  }
+
   function collectUntranslated() {
     const list = [];
     const seen = new Set();
 
     const push = (text, el) => {
       const t = (text || '').trim();
-      if (!t || t.length > 120 || seen.has(t)) return;
+      if (!t || t.length > 160 || seen.has(t)) return;
       seen.add(t);
       if (!/[A-Za-z]/.test(t)) return;
+      if (isNoise(t)) return;                  // 标识符类噪音，不报
+      if (OWNER_REPO_RE.test(t)) return;       // owner/repo
+      IDENT_RE.lastIndex = 0;
+      const m = t.match(IDENT_RE);
+      if (m && m[0] === t) return;             // 整段就是一个标识符
       // 中文已占主导（说明基本翻过了）就跳过
       const cn = (t.match(/[\u4e00-\u9fa5]/g) || []).length;
       if (cn > 0 && cn * 2 >= t.length) return;
@@ -1604,6 +1712,7 @@
     while ((n = walker.nextNode())) {
       const parent = n.parentElement;
       if (!parent || shouldSkip(parent)) continue;
+      if (isSelfLink(n) || isCommitText(parent)) continue;
       push(n.nodeValue, parent);
     }
 
@@ -1611,6 +1720,7 @@
     for (let i = 0; i < els.length; i++) {
       const el = els[i];
       if (shouldSkip(el, true)) continue;
+      if (isCommitText(el)) continue;
       for (let k = 0; k < TRANSLATE_ATTRS.length; k++) {
         const name = TRANSLATE_ATTRS[k];
         if (el.hasAttribute(name)) push(el.getAttribute(name), el);
