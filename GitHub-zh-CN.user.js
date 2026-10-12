@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.5.1
+// @version      1.5.2
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -1313,6 +1313,73 @@
       '至少一条受保护分支要求填写提交信息。'
   };
 
+  // 1.25 令牌 / 权限（细粒度令牌面板的整句与作用域名）
+  const DICT_TOKEN = {
+    'Select repository permissions': '选择仓库权限',
+    'Add permissions': '添加权限',
+    'User permissions': '用户权限',
+    'Repository access': '仓库访问',
+    'Access on': '访问范围',
+    'Select repositories': '选择仓库',
+    'Only select repositories': '仅选择指定仓库',
+    'Public repositories': '公开仓库',
+    'Read-only access to public repositories.': '对公开仓库的只读访问权限。',
+    'This applies to all current and future repositories in this account. Also includes public repositories (read-only).':
+      '适用于本账号中所有现有及未来的仓库，同时包含公开仓库（只读）。',
+    'Select at least one repository.': '请至少选择一个仓库。',
+    'Select at least one repository. Max 50 repositories. Also includes public repositories (read-only).':
+      '请至少选择一个仓库，最多 50 个仓库，同时包含公开仓库（只读）。',
+    'You have reached your maximum of 50 selected repositories.': '你已选择 50 个仓库，达到上限。',
+    'Choose the minimal permissions necessary for your needs.': '请选择满足需求的最小权限。',
+    'Learn more about permissions.': '了解权限的更多信息。',
+    'Workflows, workflow runs and artifacts.': '工作流、工作流运行记录与产物。',
+    'Search repositories, list collaborators, and access repository metadata.':
+      '搜索仓库、列出协作者并访问仓库元数据。',
+    'Access: Read-only': '访问权限：只读',
+    'This token will be ready for use immediately.': '此令牌将立即可用。',
+    'This token does not have access to any repositories.': '此令牌无权访问任何仓库。',
+    'This token does not have any user permissions.': '此令牌没有任何用户权限。',
+    'This token does not have any repository permissions.': '此令牌没有任何仓库权限。',
+    'Personal access token': '个人访问令牌',
+    'Confirm token deletion': '确认删除令牌',
+    'Close dialog': '关闭对话框',
+    'Are you sure you want to delete this token?': '确定要删除此令牌吗？',
+    'I understand, delete this token': '我了解，删除此令牌',
+    'Any applications or scripts using this token will no longer be able to access the GitHub API. You cannot undo this action.':
+      '使用此令牌的任何应用或脚本都将无法再访问 GitHub API。此操作无法撤销。',
+    'Finish installing to select more than': '完成安装以选择超过',
+    'Sorry, something went wrong.': '抱歉，出现了错误。',
+    'Not available': '不可用',
+    'No description': '无描述',
+    'Actions. More information available below.': '操作。更多信息见下方。',
+    'Metadata. More information available below.': '元数据。更多信息见下方。',
+
+    // 权限作用域名（面板枚举项）——整条收录
+    'Agent secrets': '代理密钥',
+    'Agent tasks': '代理任务',
+    'Agent variables': '代理变量',
+    'Artifact metadata': '产物元数据',
+    'Code quality': '代码质量',
+    'Codespaces lifecycle admin': '代码空间生命周期管理',
+    'Codespaces metadata': '代码空间元数据',
+    'Codespaces secrets': '代码空间密钥',
+    'Commit statuses': '提交状态',
+    'Copilot agent settings': 'Copilot 代理设置',
+    'Dependabot secrets': 'Dependabot 密钥',
+    'GitHub App installation repository access': 'GitHub 应用安装的仓库访问',
+    'License compliance alerts': '许可证合规警报',
+    'Merge queues': '合并队列',
+    'Repository creation': '仓库创建',
+    'Repository security advisories': '仓库安全公告',
+    'Secret scanning alerts': '密钥扫描警报',
+    'Secret scanning alert dismissal requests': '密钥扫描警报忽略请求',
+    'Secret scanning push protection bypass requests': '密钥扫描推送保护绕过请求',
+    'OAuth Apps': 'OAuth 应用',
+
+    // 句子被拆到多个节点时的残片（"…select more than 50 repositories." 三截）
+    'repositories.': '个仓库。'
+  };
+
   const DICT = Object.assign(
     {},
     DICT_COMMON,
@@ -1338,7 +1405,8 @@
     DICT_COPILOT,
     DICT_A11Y,
     DICT_FILELIST,
-    DICT_REPO_SETTINGS
+    DICT_REPO_SETTINGS,
+    DICT_TOKEN
   );
 
   // 只做整段精确匹配的词，不参与长句短语替换（防半中半英）
@@ -1360,6 +1428,16 @@
 
   const PATTERNS = [
     /* —— 组合优先规则：必须排在通用计数规则之前，否则会被 "N commits" 抢先命中 —— */
+    // 星期几：Expires on Sun, Jan 10, 2027 里的 Sun 此前会漏翻
+    [/\b(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*,/g,
+      (m, d) => ({ Sun: '星期日', Mon: '星期一', Tue: '星期二', Wed: '星期三',
+        Thu: '星期四', Fri: '星期五', Sat: '星期六' }[d] + '，')],
+    [/^Expires on\s*/i, '过期时间：'],
+    // Selected 1 repository. / Max 50 repositories —— 孤立翻出「1 个仓库」会半中半英
+    [/^Selected\s+(\d[\d,]*)\s+repositor(?:y|ies)\.?$/i, (m, n) => `已选择 ${n} 个仓库。`],
+    [/\bMax\s+(\d[\d,]*)\s+repositories\b/gi, (m, n) => `最多 ${n} 个仓库`],
+    // Remove saiyajiang.github.io（仓库选择器里的移除按钮）
+    [/^Remove\s+([A-Za-z0-9_.-]+)$/i, (m, r) => `移除 ${r}`],
     // 问候语：Good evening, saiyajiang!
     [/\bGood\s+(morning|afternoon|evening|night)\b/gi,
       (m, t) => ({ morning: '早上好', afternoon: '下午好', evening: '晚上好', night: '晚安' }[t.toLowerCase()])],
