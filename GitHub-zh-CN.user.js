@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.5.0
+// @version      1.5.1
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -1256,6 +1256,48 @@
     'Once you delete a repository, there is no going back. Please be certain.': '仓库删除后无法恢复，请确认。',
     'Effects of deleting this repository': '删除此仓库的影响',
 
+    /* —— 账号设置页（/settings 下） —— */
+    'User settings': '用户设置',
+    'Settings menu': '设置菜单',
+    'Your personal account': '你的个人账号',
+
+    // 侧栏分组
+    'Public profile': '公开资料',
+    'Billing and licensing': '账单与许可',
+    'AI usage': 'AI 用量',
+    'Budgets and alerts': '预算与警报',
+    'Payment information': '支付信息',
+    'Payment history': '支付记录',
+    'Additional billing details': '其他账单详情',
+    'Education benefits': '教育优惠',
+    'Password and authentication': '密码与身份验证',
+    'Scheduled reminders': '定时提醒',
+    'Security log': '安全日志',
+    'Sponsorship log': '赞助日志',
+
+    // SSH 密钥
+    'SSH keys': 'SSH 密钥',
+    'There are no SSH keys associated with your account.': '你的账号没有关联的 SSH 密钥。',
+    'Check out our guide to': '查看我们的指南：',
+    'connecting to GitHub using SSH keys': '使用 SSH 密钥连接 GitHub',
+    'or troubleshoot': '或排查',
+    'common SSH problems': '常见的 SSH 问题',
+
+    // GPG 密钥
+    'GPG keys': 'GPG 密钥',
+    'There are no GPG keys associated with your account.': '你的账号没有关联的 GPG 密钥。',
+    'Learn how to': '了解如何',
+    'generate a GPG key and add it to your account': '生成 GPG 密钥并添加到你的账号',
+
+    // Vigilant 模式
+    'Vigilant mode': 'Vigilant 模式',
+    'Enable Vigilant mode': '启用 Vigilant 模式',
+    'Learn about vigilant mode': '了解 Vigilant 模式',
+    'Flag unsigned commits as unverified': '将未签名的提交标记为未验证',
+    'This will include any commit attributed to your account but not signed with your GPG or S/MIME key.':
+      '这将包括归因于你的账号、但未使用 GPG 或 S/MIME 密钥签名的任何提交。',
+    'Note that this will include your existing unsigned commits.': '请注意，这将包括你现有的未签名提交。',
+
     // 本轮报告补录（含单复数变体、带变量的整句）
     'Issue permissions': '议题权限',
     'Pull request permissions': '拉取请求权限',
@@ -1929,6 +1971,7 @@
   const NOISE_RE = [
     /^[0-9a-f]{7,40}$/i,           // commit sha
     /^@?[A-Za-z0-9_-]+$/,          // 单个不含空格的词，极可能是文件名 / 用户名
+    /^\(?@?[A-Za-z0-9_.-]+\)?$/,   // 用户名，可能带括号：(saiyajiang)
     /^©/,
     /^[\w.-]+:\s*[\d.]+%$/,        // JavaScript: 49.7%
     /^[\w.-]+\.(md|html|js|css|json|yml|yaml|xml|txt|svg|png|jpg|gif|sh|ps1)$/i
@@ -1939,7 +1982,8 @@
     'github', 'git', 'lfs', 'copilot', 'mcp', 'dco', 'api', 'url', 'readme',
     'png', 'gif', 'jpg', 'jpeg', 'svg', 'html', 'css', 'js', 'json', 'mb', 'kb', 'gb',
     'javascript', 'typescript', 'powershell', 'python', 'markdown', 'cookie',
-    'ssh', 'https', 'http', 'cli', 'pr', 'prs', 'id', 'ui', 'os', 'app', 'apps'
+    'ssh', 'https', 'http', 'cli', 'pr', 'prs', 'id', 'ui', 'os', 'app', 'apps',
+    'gpg', 'vigilant', 'smime', 'mode', 'ai', 'gpt', 'npm', 'sql', 'cdn', 'dns'
   ]);
 
   function isNoise(t) {
