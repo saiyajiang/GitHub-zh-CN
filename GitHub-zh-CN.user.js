@@ -3,7 +3,7 @@
 // @name:zh-CN   GitHub 中文化
 // @name:en      GitHub Chinese Localization
 // @namespace    https://github.com/saiyajiang/GitHub-zh-CN
-// @version      1.5.2
+// @version      1.5.3
 // @description  将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:zh-CN 将 GitHub 网页界面的英文文案实时替换为简体中文（不翻译代码与用户内容）。本脚本由 AI 生成。
 // @description:en  Translate GitHub's web UI into Simplified Chinese on the fly (code and user content untouched). AI-generated script.
@@ -1380,6 +1380,99 @@
     'repositories.': '个仓库。'
   };
 
+  /* 1.26 经典令牌（classic）与 OAuth 作用域
+   * 注意：作用域名本身（repo:status、write:packages、admin:org_hook …）是 API 标识符，
+   * 一律不翻译，只翻它们后面的说明文字。IDENT_RE 已覆盖 word:word 形态。 */
+  const DICT_TOKEN_CLASSIC = {
+    'New personal access token (classic)': '新建个人访问令牌（经典）',
+    'Personal access tokens (classic) function like ordinary OAuth access tokens. They can be used instead of a password for Git over HTTPS, or can be used to':
+      '个人访问令牌（经典）的用法与普通 OAuth 访问令牌类似。它们可以用来替代密码通过 HTTPS 使用 Git，或者用来',
+    'authenticate to the API over Basic Authentication': '通过基本身份验证访问 API',
+    'What’s this token for?': '此令牌用于什么？',
+    'No expiration': '永不过期',
+    'Select date *': '选择日期 *',
+    "Expiration date can't be blank": '有效期不能为空',
+    'The token will expire on the selected date': '令牌将在所选日期过期',
+    'GitHub strongly recommends that you set an expiration date for your token to help keep your information secure.':
+      'GitHub 强烈建议你为令牌设置有效期，以帮助保护你的信息安全。',
+    'Select scopes': '选择作用域',
+    'Scopes define the access for personal tokens.': '作用域决定了个人令牌的访问权限。',
+    'Read more about OAuth scopes.': '了解 OAuth 作用域的更多信息。',
+
+    // —— repo ——
+    'Full control of private repositories': '对私有仓库的完全控制',
+    'Access commit status': '访问提交状态',
+    'Access deployment status': '访问部署状态',
+    'Access public repositories': '访问公开仓库',
+    'Access repository invitations': '访问仓库邀请',
+    'Read and write security events': '读写安全事件',
+    'Update GitHub Action workflows': '更新 GitHub Action 工作流',
+
+    // —— packages ——
+    'Upload packages to GitHub Package Registry': '上传软件包到 GitHub 软件包注册表',
+    'Download packages from GitHub Package Registry': '从 GitHub 软件包注册表下载软件包',
+    'Delete packages from GitHub Package Registry': '从 GitHub 软件包注册表删除软件包',
+
+    // —— org ——
+    'Full control of orgs and teams, read and write org projects': '对组织和团队的完全控制，读写组织项目',
+    'Read and write org and team membership, read and write org projects': '读写组织与团队成员资格，读写组织项目',
+    'Read org and team membership, read org projects': '读取组织与团队成员资格，读取组织项目',
+    'Manage org runners and runner groups': '管理组织运行器与运行器组',
+
+    // —— public_key ——
+    'Full control of user public keys': '对用户公钥的完全控制',
+    'Write user public keys': '写入用户公钥',
+    'Read user public keys': '读取用户公钥',
+
+    // —— hooks ——
+    'Full control of repository hooks': '对仓库钩子的完全控制',
+    'Write repository hooks': '写入仓库钩子',
+    'Read repository hooks': '读取仓库钩子',
+    'Full control of organization hooks': '对组织钩子的完全控制',
+
+    // —— user / gist / notifications ——
+    'Create gists': '创建代码片段',
+    'Access notifications': '访问通知',
+    'Update ALL user data': '更新全部用户数据',
+    'Read ALL user profile data': '读取全部用户资料数据',
+    'Access user email addresses (read-only)': '访问用户邮箱地址（只读）',
+    'Follow and unfollow users': '关注与取消关注用户',
+    'Delete repositories': '删除仓库',
+
+    // —— discussion ——
+    'Read and write team discussions': '读写团队讨论',
+    'Read team discussions': '读取团队讨论',
+
+    // —— enterprise ——
+    'Full control of enterprises': '对企业的完全控制',
+    'Manage enterprise runners and runner groups': '管理企业运行器与运行器组',
+    'Read and write enterprise billing data': '读写企业账单数据',
+    'Read enterprise profile data': '读取企业资料数据',
+    'Provisioning of users and groups via SCIM': '通过 SCIM 配置用户与组',
+
+    // —— audit_log / codespaces / copilot ——
+    'Full control of audit log': '对审计日志的完全控制',
+    'Read access of audit log': '审计日志的读取权限',
+    'Full control of codespaces': '对代码空间的完全控制',
+    'Ability to create, read, update, and delete codespace secrets': '可创建、读取、更新和删除代码空间密钥',
+    'Full control of GitHub Copilot settings and seat assignments': '对 GitHub Copilot 设置与席位分配的完全控制',
+    'View and edit Copilot Business seat assignments': '查看与编辑 Copilot Business 席位分配',
+
+    // —— network_configurations / projects ——
+    'Write org hosted compute network configurations': '写入组织托管计算的网络配置',
+    'Read org hosted compute network configurations': '读取组织托管计算的网络配置',
+    'Full control of projects': '对项目的完全控制',
+    'Read access of projects': '项目的读取权限',
+
+    // —— gpg_key / ssh_signing_key ——
+    'Full control of public user GPG keys': '对用户公开 GPG 密钥的完全控制',
+    'Write public user GPG keys': '写入用户公开 GPG 密钥',
+    'Read public user GPG keys': '读取用户公开 GPG 密钥',
+    'Full control of public user SSH signing keys': '对用户公开 SSH 签名密钥的完全控制',
+    'Write public user SSH signing keys': '写入用户公开 SSH 签名密钥',
+    'Read public user SSH signing keys': '读取用户公开 SSH 签名密钥'
+  };
+
   const DICT = Object.assign(
     {},
     DICT_COMMON,
@@ -1406,7 +1499,8 @@
     DICT_A11Y,
     DICT_FILELIST,
     DICT_REPO_SETTINGS,
-    DICT_TOKEN
+    DICT_TOKEN,
+    DICT_TOKEN_CLASSIC
   );
 
   // 只做整段精确匹配的词，不参与长句短语替换（防半中半英）
@@ -1438,6 +1532,9 @@
     [/\bMax\s+(\d[\d,]*)\s+repositories\b/gi, (m, n) => `最多 ${n} 个仓库`],
     // Remove saiyajiang.github.io（仓库选择器里的移除按钮）
     [/^Remove\s+([A-Za-z0-9_.-]+)$/i, (m, r) => `移除 ${r}`],
+    // 有效期下拉：90 days (2027 年 1 月 10 日) / 7 days (…)
+    [/^(\d[\d,]*)\s+days?\s*\((.+)\)$/i, (m, n, date) => `${n} 天（${date}）`],
+    [/^(\d[\d,]*)\s+days?$/i, '$1 天'],
     // 问候语：Good evening, saiyajiang!
     [/\bGood\s+(morning|afternoon|evening|night)\b/gi,
       (m, t) => ({ morning: '早上好', afternoon: '下午好', evening: '晚上好', night: '晚安' }[t.toLowerCase()])],
@@ -1677,8 +1774,10 @@
    *   2) owner/repo 路径：saiyajiang/Bilibili-Search-Replace
    * 命中的片段先用占位符藏起来，短语替换跑完再原样还原。
    */
+  // 末位是 word:word —— OAuth 作用域（repo:status、write:packages、admin:org_hook …），
+  // 这些是 API 标识符，翻了会让人以为真的有这个中文权限名。
   const IDENT_RE =
-    /[A-Za-z0-9_\u4e00-\u9fa5]+(?:[-_.][A-Za-z0-9_\u4e00-\u9fa5]+)+|[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+/g;
+    /[A-Za-z0-9_\u4e00-\u9fa5]+(?:[-_.][A-Za-z0-9_\u4e00-\u9fa5]+)+|[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+|[a-z][a-z0-9_]*:[a-z][a-z0-9_]*/gi;
   const IDENT_HOLDER = /\u0000(\d+)\u0000/g;
 
   function protectIdentifiers(text, translate) {
@@ -2050,6 +2149,7 @@
     /^[0-9a-f]{7,40}$/i,           // commit sha
     /^@?[A-Za-z0-9_-]+$/,          // 单个不含空格的词，极可能是文件名 / 用户名
     /^\(?@?[A-Za-z0-9_.-]+\)?$/,   // 用户名，可能带括号：(saiyajiang)
+    /^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$/i, // OAuth 作用域：repo:status、write:packages
     /^©/,
     /^[\w.-]+:\s*[\d.]+%$/,        // JavaScript: 49.7%
     /^[\w.-]+\.(md|html|js|css|json|yml|yaml|xml|txt|svg|png|jpg|gif|sh|ps1)$/i
